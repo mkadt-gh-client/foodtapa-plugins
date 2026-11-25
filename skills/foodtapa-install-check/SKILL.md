@@ -15,6 +15,7 @@ description: 푸드타파 스킬이 이 AI 앱에 설치됐는지 확인한다. 
    | --- | --- | --- |
    | foodtapa-notion-review | 노션 원고를 사이트 검수로 보내고 결과를 보고 (메인) | 노션 원고 검수 보내 주세요. 링크: https://… |
    | foodtapa-setup | 접속 정보 파일을 열어 아이디·비밀번호를 직접 넣고 연결 확인 | 푸드타파 접속 설정해 주세요 |
+   | foodtapa-notion-fill | 원고에 검수에 필요한 값이 있는지 점검하고 함께 채우기 | 노션 원고 점검해 주세요. 링크: https://… |
    | foodtapa-review-status | 검수 결과·발행 상태 확인 | 검수 결과 확인해 주세요. 링크: https://… |
    | foodtapa-notion-revise | 검수 의견대로 노션 원고를 고쳐 다시 보내기 | 노션 원고 수정 반영해 주세요. 링크: https://… |
    | foodtapa-review-override | 오탐을 사유와 함께 관리자 허용 | 관리자 허용해 주세요. 링크: https://… |
