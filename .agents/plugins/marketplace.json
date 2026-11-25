@@ -1,0 +1,21 @@
+{
+  "name": "foodtapa-plugins",
+  "interface": {
+    "displayName": "푸드타파"
+  },
+  "plugins": [
+    {
+      "name": "foodtapa",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/mkadt-gh-client/foodtapa-plugins.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

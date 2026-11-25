@@ -1,0 +1,18 @@
+{
+  "name": "foodtapa",
+  "version": "1.0.0",
+  "description": "푸드타파 노션 원고 검수 보내기와 설치 확인 스킬",
+  "author": {
+    "name": "marketadapter"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "푸드타파",
+    "shortDescription": "노션 원고를 푸드타파 사이트 검수로 보내기",
+    "longDescription": "노션 원고 한 편을 푸드타파 사이트의 외부 원고 검수로 보내고 결과 확인, 수정 반영, 관리자 허용, 발행 예약까지 진행합니다.",
+    "developerName": "marketadapter",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "푸드타파 스킬 설치 확인해줘"
+  }
+}
