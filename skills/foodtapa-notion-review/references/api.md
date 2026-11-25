@@ -5,18 +5,13 @@
 ## 판단 기준
 
 1. **사이트 응답이 가장 우선이다.** 이 문서와 실제 응답이 다르면 응답을 따른다. 오류는 코드 이름을 외워 판단하지 않고 HTTP 상태, `message`, `data.field`(위치), `data.reason`(이유)을 읽어 판단한다.
-2. **엔드포인트와 허용값은 사이트 라우트 목록으로 확인한다.** 작업을 시작할 때 한 번 조회해 아래 경로가 모두 있는지 본다. 이 문서의 경로가 목록에 없으면 보내지 말고 "사이트 API가 바뀌어 스킬 업데이트가 필요합니다"라고 알린 뒤 멈춘다. 발행 `status`처럼 허용값이 목록에 적힌 항목은 목록의 값을 쓴다.
+2. **경로가 바뀌면 사이트가 알려 준다.** 이 문서의 경로에 보냈는데 `404`와 `rest_no_route`가 오면 경로가 없어진 것이다. 보내지 말고 "사이트 API가 바뀌어 스킬 업데이트가 필요합니다"라고 알린 뒤 멈춘다. 허용값이 틀리면 `400`과 `rest_invalid_param`이 오고 `message`에 허용값이 나온다. 그 값으로 고친다.
+3. **GET 요청을 보내지 않는다.** 사이트 캐시가 인증한 GET 응답을 저장해 로그인하지 않은 사람에게 보여 줄 수 있다. 외부 원고 검수와 AI 상태 확인은 모두 POST로 보낸다. 예외는 아래 4의 분류 목록 조회뿐이다(공개된 분류 이름이고 사이트가 캐시하지 않는 것을 확인했다).
+4. **원고 JSON 형식은 사이트가 받은 뒤 검사한다.** 그래서 422 응답의 위치·이유가 형식의 기준이다. 이 문서에 없는 필드를 요구받으면 위치·이유대로 고칠 방법을 정한다. 그 값이 노션 페이지에 없으면 만들지 않고 묻는다.
+5. **분류 이름은 사이트에 등록된 목록으로 확인한다.** 축마다 아래로 조회한다. 100개가 넘으면 `page=2`로 이어서 읽는다.
 
    ```sh
    set -a; . ./foodtapa-api.env; set +a
-   printf 'user = "%s:%s"\n' "$FOODTAPA_USER" "$FOODTAPA_APP_PASSWORD" | curl -sS -K - "$FOODTAPA_SITE/wp-json/fdt/v1" |
-     jq -r '.routes | to_entries[] | select(.key|test("external-reviews|ai-status")) | "\(.key) \(.value.endpoints[0].args|keys|join(","))"'
-   ```
-
-3. **원고 JSON 형식은 라우트 목록에 나오지 않는다.** 서버가 받은 뒤 검사하므로 422 응답의 위치·이유가 형식의 기준이다. 이 문서에 없는 필드를 요구받으면 위치·이유대로 고칠 방법을 정한다. 그 값이 노션 페이지에 없으면 만들지 않고 묻는다.
-4. **분류 이름은 사이트에 등록된 목록으로 확인한다.** 축마다 아래로 조회한다. 100개가 넘으면 `page=2`로 이어서 읽는다.
-
-   ```sh
    for t in product brand model topic situation; do
      printf '%s: ' "$t"
      printf 'user = "%s:%s"\n' "$FOODTAPA_USER" "$FOODTAPA_APP_PASSWORD" | curl -sS -K - \
@@ -24,14 +19,14 @@
    done
    ```
 
-5. **응답에 이 문서에 없는 항목이 더 있으면** 버리지 말고 보고 표에 함께 보여 준다. 검수 항목(`checks`)에 처음 보는 `key`가 있으면 그 `label`을 그대로 쓴다.
-6. **처음 보는 상태나 오류**는 응답 내용을 그대로 알리고 멈춘다. 뜻을 짐작해 다음 단계로 넘어가지 않는다.
-7. 같은 응답이 이 문서와 계속 다르면 스킬이 오래된 것일 수 있다. "푸드타파 스킬 설치 확인해줘"로 최신 버전인지 확인하라고 안내한다.
+6. **응답에 이 문서에 없는 항목이 더 있으면** 버리지 말고 보고 표에 함께 보여 준다. 검수 항목(`checks`)에 처음 보는 `key`가 있으면 그 `label`을 그대로 쓴다.
+7. **처음 보는 상태나 오류**는 응답 내용을 그대로 알리고 멈춘다. 뜻을 짐작해 다음 단계로 넘어가지 않는다.
+8. 같은 응답이 이 문서와 계속 다르면 스킬이 오래된 것일 수 있다. "푸드타파 스킬 설치 확인해줘"로 최신 버전인지 확인하라고 안내한다.
 
 ## 인증과 공통 사항
 
-- 모든 요청은 `foodtapa-api.env`의 아이디와 애플리케이션 비밀번호로 인증한다. 인증은 SKILL.md "전송 방법"처럼 표준 입력으로만 넘긴다.
-- 외부 원고 검수 경로는 모두 **POST**다. 본문이 없는 요청도 `{}`를 보낸다. AI 상태 조회만 GET이다.
+- 모든 요청은 `foodtapa-api.env`의 아이디와 애플리케이션 비밀번호로 인증한다. 인증은 메인 스킬 "전송 방법"처럼 표준 입력으로만 넘긴다.
+- 아래 경로는 모두 **POST**다. 본문이 없는 요청도 `{}`를 보낸다.
 - 기본 주소: `api="$FOODTAPA_SITE/wp-json/fdt/v1/workflows/external-reviews"`
 
 ## 경로
@@ -45,7 +40,7 @@
 | `$api/{id}/retry` | 오류 난 검수 다시 실행 | `{}` | `202`, `status`가 `queued` |
 | `$api/{id}/override` | 관리자 허용 | `{"reason":"사유"}` | `200`, `status`가 `passed` |
 | `$api/{id}/publish` | 발행 승인과 글 등록 | `{"status":"…","date":"…"}` | `200`, 글 번호와 상태 |
-| `$FOODTAPA_SITE/wp-json/fdt/v1/workflows/ai-status` (GET) | AI 연결 상태 | 없음 | 제공사별 키·연결 상태 |
+| `$FOODTAPA_SITE/wp-json/fdt/v1/workflows/ai-status/check` | AI 연결 확인 | `{}` | 제공사별 키·연결 상태 |
 
 `$api/{id}/prepare`와 `$api/{id}/approval-drafts`는 관리자 화면이 쓰는 중간 단계다. 발행 요청이 이 둘을 함께 처리하므로 직접 부르지 않는다.
 
@@ -105,15 +100,15 @@
 - 같은 접수에 다시 보내면 같은 글의 상태와 시각만 바뀐다.
 - 주제 묶음(비교·추천, 불만·고장, 실사용 후기)은 사이트가 글 내용을 보고 정한다. 보낸 주제와 다르게 붙을 수 있으며 오류가 아니다.
 
-## AI 상태 (`ai-status`)
+## AI 상태 (`ai-status/check`)
 
-검수가 `error`로 끝났을 때 원인을 찾는 데 쓴다. 키 값은 응답에 나오지 않는다.
+검수가 `error`로 끝났을 때 원인을 찾는 데 쓴다. 등록된 키로 모델 조회만 해 보고 결과를 돌려준다. 글을 만들지 않으므로 생성 비용이 들지 않는다. 키 값은 응답에 나오지 않는다. `GET .../ai-status`는 위 "판단 기준" 3 때문에 쓰지 않는다.
 
 ```sh
 printf 'user = "%s:%s"\n' "$FOODTAPA_USER" "$FOODTAPA_APP_PASSWORD" | curl -sS -K - \
-  "$FOODTAPA_SITE/wp-json/fdt/v1/workflows/ai-status" |
+  -H 'Content-Type: application/json' --data '{}' "$FOODTAPA_SITE/wp-json/fdt/v1/workflows/ai-status/check" |
   jq '.providers | map_values({key_configured, health, models: (.models | map_values({state, error, last_request}))})'
 ```
 
 - `providers`에 제공사(`anthropic`, `openai`)별로 `key_configured` 키 등록 여부, `health.label` 상태, `models` 이 사이트가 쓰는 모델별 연결 기록이 있다.
-- `health.label`은 지금 `미등록`, `키를 읽지 못함`, `사용 중인 단계 없음`, `연결 실패`, `연결됨`, `연결 확인 필요` 중 하나다. 판단은 errors.md "검수가 오류로 끝남"을 따른다.
+- `health.label`은 지금 `미등록`, `키를 읽지 못함`, `사용 중인 단계 없음`, `연결 실패`, `연결됨`, `연결 확인 필요` 중 하나다. 판단은 `foodtapa-review-errors` 스킬의 "검수가 오류로 끝남"을 따른다.
