@@ -41,7 +41,7 @@ codex plugin add foodtapa@foodtapa-plugins
 /foodtapa:foodtapa-tutorial
 ```
 
-Codex에서는 **푸드타파 튜토리얼 시작해 주세요**라고 요청합니다.
+ChatGPT 앱(Codex)에서는 Work 입력창에 `$foodtapa:tu`를 입력하고 목록의 **Foodtapa: Foodtapa Tutorial**을 골라 보냅니다.
 
 ## 처음 설정
 

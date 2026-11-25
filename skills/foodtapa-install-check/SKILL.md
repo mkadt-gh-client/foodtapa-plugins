@@ -14,7 +14,7 @@ description: 푸드타파 스킬이 이 AI 앱에 설치됐는지 확인한다. 
    | 스킬 | 하는 일 | 요청 예시 |
    | --- | --- | --- |
    | foodtapa-notion-review | 노션 원고를 사이트 검수로 보내고 결과를 보고 (메인) | 노션 원고 검수 보내 주세요. 링크: https://… |
-   | foodtapa-tutorial | 노션 없이 샘플 원고로 처음부터 발행 연습까지 따라 하기 | /foodtapa:foodtapa-tutorial |
+   | foodtapa-tutorial | 노션 없이 샘플 원고로 처음부터 발행 연습까지 따라 하기 | Claude: /foodtapa:foodtapa-tutorial · ChatGPT 앱: $foodtapa:tu 입력 후 Foodtapa Tutorial 선택 |
    | foodtapa-setup | 접속 정보 파일을 열어 아이디·비밀번호를 직접 넣고 연결 확인 | 푸드타파 접속 설정해 주세요 |
    | foodtapa-notion-fill | 원고에 검수에 필요한 값이 있는지 점검하고 함께 채우기 | 노션 원고 점검해 주세요. 링크: https://… |
    | foodtapa-review-status | 검수 결과·발행 상태 확인 | 검수 결과 확인해 주세요. 링크: https://… |
@@ -24,4 +24,6 @@ description: 푸드타파 스킬이 이 AI 앱에 설치됐는지 확인한다. 
    | foodtapa-review-errors | 오류가 났을 때 원인과 할 일 안내 | 오류 났어요 |
 
    "보이지 않음"이 하나라도 있으면 표 아래에 "일부 스킬이 보이지 않습니다. 앱을 완전히 종료했다가 다시 열거나 설치를 다시 해 주세요"라고 알린다.
-4. 마지막 줄에 "처음 쓰시면 입력창에 **/foodtapa:foodtapa-tutorial** 을 보내 보세요. 노션 없이 샘플 원고로 처음부터 끝까지 따라 해 볼 수 있습니다."를 붙인다.
+4. 마지막 줄에 지금 앱에 맞는 튜토리얼 시작 방법을 붙인다. 표의 튜토리얼 요청 예시도 지금 앱에 맞는 것만 적는다.
+   - Claude: "처음 쓰시면 입력창에 **/foodtapa:foodtapa-tutorial** 을 보내 보세요. 노션 없이 샘플 원고로 처음부터 끝까지 따라 해 볼 수 있습니다."
+   - ChatGPT 앱(Codex): "처음 쓰시면 입력창에 **$foodtapa:tu** 를 입력하고 목록의 **Foodtapa: Foodtapa Tutorial** 을 골라 보내 보세요. 노션 없이 샘플 원고로 처음부터 끝까지 따라 해 볼 수 있습니다."
