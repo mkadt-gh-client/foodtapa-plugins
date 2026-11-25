@@ -1,6 +1,6 @@
 {
   "name": "foodtapa",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "푸드타파 노션 원고를 사이트 외부 원고 검수로 보내고, 접속 설정·원고 정보 채우기·결과 확인·수정 반영·관리자 허용·발행·오류 대응까지 돕는 스킬 모음",
   "author": {
     "name": "marketadapter"

@@ -101,6 +101,17 @@ description: 노션 원고 한 편을 푸드타파 사이트의 외부 원고 �
   ```sh
   for k in FOODTAPA_SITE FOODTAPA_USER FOODTAPA_APP_PASSWORD NOTION_TOKEN; do grep -q "^$k=." foodtapa-api.env && echo "$k 있음" || echo "$k 비어 있음"; done
   ```
+- **사이트 AI 연결 확인**: 대화에서 처음 원고를 보내기 전에 한 번, 사이트에 검수용 AI 키가 있는지 확인한다. 모델 조회만 하므로 생성 비용이 들지 않는다.
+  ```sh
+  set -a; . ./foodtapa-api.env; set +a
+  printf 'user = "%s:%s"\n' "$FOODTAPA_USER" "$FOODTAPA_APP_PASSWORD" | curl -sS -K - -o ai-check.json -w 'HTTP %{http_code}\n' \
+    -H 'Content-Type: application/json' --data '{}' "$FOODTAPA_SITE/wp-json/fdt/v1/workflows/ai-status/check"
+  jq -r '.providers | to_entries[] | select((.value.models|length)>0) | "\(.value.label): \(.value.health.label)"' ai-check.json 2>/dev/null; rm -f ai-check.json
+  ```
+  - 이 사이트가 쓰는 제공사(위 결과에 나온 이름)가 `미등록`이면 보내지 않는다. 보내도 검수가 오류로 끝난다. "사이트에 검수용 AI 키가 없습니다. 사이트 관리자로 로그인한 뒤 **자동화 → AI API 연결**(`$FOODTAPA_SITE/wp-admin/admin.php?page=fdtw-ai-connection`)에서 키를 등록해 주세요"라고 알리고 멈춘다. 사람이 원하면 `foodtapa-setup` 스킬의 "AI 키 등록"으로 등록을 돕는다.
+  - `키를 읽지 못함`·`연결 실패`면 보내지 않는다. 결과의 안내 문구를 전하고 관리자 화면에서 키를 확인해 달라고 한 뒤 멈춘다.
+  - `연결됨`·`연결 확인 필요`·`사용 중인 단계 없음`이면 그대로 진행한다.
+  - `HTTP`가 `200`이 아니면(예: 계정에 사이트 관리자 권한이 없어 `403`) 확인을 건너뛰고 진행한다. 검수가 오류로 끝나면 그때 원인을 찾는다.
 - **노션 읽기**: AI 앱의 노션 커넥터(MCP)로 페이지와 하위 블록을 읽는다. 커넥터가 없고 `NOTION_TOKEN`이 채워져 있을 때만 `NOTION_TOKEN`으로 노션 API의 블록 목록(`GET https://api.notion.com/v1/blocks/{페이지 ID}/children`, 하위 블록이 있으면 재귀)을 읽는다. 둘 다 안 되면 노션 연결이나 토큰 준비를 안내하고 멈춘다. 404가 나면 그 페이지에 통합이 연결되지 않은 것이다.
 - Windows에서는 아래 셸 명령을 같은 원칙(비밀값은 변수로만, 출력 금지)으로 PowerShell에 맞게 바꿔 실행한다.
 
