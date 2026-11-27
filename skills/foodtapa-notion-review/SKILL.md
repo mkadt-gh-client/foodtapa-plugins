@@ -27,13 +27,13 @@ description: 노션 원고 한 편을 음처기넷 사이트의 외부 원고 �
 
 ## 보낼 사이트
 
-- **지금은 kincomm(`https://kincomm.kinsta.cloud`)으로만 보낸다.** 음식물처리기.net은 아직 QA 용도라 원고를 보내지 않는다.
-- 시작할 때 `FOODTAPA_SITE`가 kincomm 주소인지 확인한다. 아이디·비밀번호는 출력하지 않고 사이트 주소만 본다. 다른 주소면 보내지 말고 `FOODTAPA_SITE=https://kincomm.kinsta.cloud`로 바꾸고 그 사이트의 아이디·애플리케이션 비밀번호를 넣어 달라고 안내한 뒤 멈춘다.
+- **음식물처리기.net(`https://xn--ok0bu1tj8ag2pewfs6i.net`)으로 보낸다.** 맥 기본 curl은 한글 주소를 못 쓰므로 이 형태로 적는다.
+- 시작할 때 `FOODTAPA_SITE`가 이 주소인지 확인한다. 아이디·비밀번호는 출력하지 않고 사이트 주소만 본다. 다른 주소(예전 주소 `https://kincomm.kinsta.cloud` 포함)면 보내지 말고 `foodtapa-setup` 스킬의 "사이트 주소 바꾸기"를 따른다.
 
   ```sh
-  grep -qx 'FOODTAPA_SITE=https://kincomm.kinsta.cloud/\{0,1\}' foodtapa-api.env && echo "kincomm" || echo "kincomm 아님"
+  grep -qx 'FOODTAPA_SITE=https://xn--ok0bu1tj8ag2pewfs6i.net/\{0,1\}' foodtapa-api.env && echo "음식물처리기.net" || echo "음식물처리기.net 아님"
   ```
-- 아래 "확인 표"와 발행·예약 표, 관리자 허용 표의 맨 위에 **보낼 사이트** 행을 넣고 "kincomm"으로 적는다.
+- 아래 "확인 표"와 발행·예약 표, 관리자 허용 표의 맨 위에 **보낼 사이트** 행을 넣고 "음식물처리기.net"으로 적는다.
 
 ## 세부 스킬
 

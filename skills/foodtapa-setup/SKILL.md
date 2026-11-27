@@ -1,6 +1,6 @@
 ---
 name: foodtapa-setup
-description: 음처기넷 스킬의 접속 정보 파일(foodtapa-api.env)을 맥·윈도우에 맞게 만들고 편집기로 열어, 사람이 아이디와 애플리케이션 비밀번호를 대화창이 아닌 파일에 직접 넣게 한 뒤 연결을 확인한다. 애플리케이션 비밀번호 발급 화면과 사이트 AI 키 등록도 안내한다. "음처기넷 접속 설정해 주세요", "애플리케이션 비밀번호 어떻게 만들어요?", "비밀번호 바꿨어요", "AI 키 등록해 주세요"라고 할 때와 다른 음처기넷 스킬에서 접속 정보가 없거나 비었거나 401·403이 났을 때 사용한다.
+description: 음처기넷 스킬의 접속 정보 파일(foodtapa-api.env)을 맥·윈도우에 맞게 만들고 편집기로 열어, 사람이 아이디와 애플리케이션 비밀번호를 대화창이 아닌 파일에 직접 넣게 한 뒤 연결을 확인한다. 애플리케이션 비밀번호 발급 화면과 사이트 AI 키 등록도 안내한다. "음처기넷 접속 설정해 주세요", "애플리케이션 비밀번호 어떻게 만들어요?", "비밀번호 바꿨어요", "AI 키 등록해 주세요", "사이트 주소 바꿔 주세요"라고 할 때와 다른 음처기넷 스킬에서 접속 정보가 없거나 비었거나 401·403이 났을 때 사용한다.
 ---
 
 # 음처기넷 접속 설정
@@ -21,13 +21,13 @@ description: 음처기넷 스킬의 접속 정보 파일(foodtapa-api.env)을 �
 
 ## 2. 파일을 만들고 연다
 
-작업 폴더는 맥 `~/foodtapa`, 윈도우 `%USERPROFILE%\foodtapa`다. 파일이 없을 때만 틀을 만든다. 이미 있으면 내용을 바꾸지 않고 열기만 한다. 틀에는 비밀값을 넣지 않는다.
+작업 폴더는 맥 `~/foodtapa`, 윈도우 `%USERPROFILE%\foodtapa`다. 파일이 없을 때만 틀을 만든다. 이미 있으면 내용을 바꾸지 않고 열기만 한다. 다만 `FOODTAPA_SITE`가 위 주소와 다르면 아래 "사이트 주소 바꾸기"를 따른다. 틀에는 비밀값을 넣지 않는다.
 
 **맥**
 
 ```sh
 mkdir -p ~/foodtapa && cd ~/foodtapa
-[ -f foodtapa-api.env ] || printf 'FOODTAPA_SITE=https://kincomm.kinsta.cloud\nFOODTAPA_USER=\nFOODTAPA_APP_PASSWORD=\nNOTION_TOKEN=\n' > foodtapa-api.env
+[ -f foodtapa-api.env ] || printf 'FOODTAPA_SITE=https://xn--ok0bu1tj8ag2pewfs6i.net\nFOODTAPA_USER=\nFOODTAPA_APP_PASSWORD=\nNOTION_TOKEN=\n' > foodtapa-api.env
 chmod 600 foodtapa-api.env
 open -e foodtapa-api.env || open -R foodtapa-api.env
 ```
@@ -37,7 +37,7 @@ open -e foodtapa-api.env || open -R foodtapa-api.env
 ```powershell
 $dir = Join-Path $env:USERPROFILE 'foodtapa'; New-Item -ItemType Directory -Force $dir | Out-Null
 $f = Join-Path $dir 'foodtapa-api.env'
-if (-not (Test-Path $f)) { [IO.File]::WriteAllLines($f, @('FOODTAPA_SITE=https://kincomm.kinsta.cloud','FOODTAPA_USER=','FOODTAPA_APP_PASSWORD=','NOTION_TOKEN=')) }
+if (-not (Test-Path $f)) { [IO.File]::WriteAllLines($f, @('FOODTAPA_SITE=https://xn--ok0bu1tj8ag2pewfs6i.net','FOODTAPA_USER=','FOODTAPA_APP_PASSWORD=','NOTION_TOKEN=')) }
 notepad $f
 ```
 
@@ -126,6 +126,30 @@ Remove-Item q.json, e.json
 | `HTTP 401` | 아이디나 애플리케이션 비밀번호가 틀렸다. 로그인 비밀번호를 넣지 않았는지, 복사가 잘리지 않았는지 확인하고 새로 만들어 넣어 달라고 하며 파일을 다시 열어 준다 |
 | `HTTP 403` | 이 계정에 관리자 권한이 없다. 관리자 계정의 아이디와 그 계정에서 만든 애플리케이션 비밀번호로 바꿔 달라고 한다 |
 | 그 밖 | 응답 코드를 그대로 알리고 멈춘다 |
+
+## 사이트 주소 바꾸기
+
+파일의 `FOODTAPA_SITE`가 `https://xn--ok0bu1tj8ag2pewfs6i.net`(음식물처리기.net)이 아니면(예전 주소 `https://kincomm.kinsta.cloud` 등) 이 절을 따른다. 사이트 주소는 비밀값이 아니라 AI가 바꾼다. 아이디와 애플리케이션 비밀번호는 사이트마다 따로라 예전 값은 비우고, 사람이 새 사이트의 값을 직접 넣게 한다. `NOTION_TOKEN`은 그대로 둔다.
+
+1. 1단계 경고를 보여 준다.
+2. 주소를 바꾸고 아이디·비밀번호 줄을 비운 뒤 파일을 연다. 값은 출력하지 않는다.
+
+   ```sh
+   cd ~/foodtapa
+   sed -i '' -e $'s/\r$//' -e 's#^FOODTAPA_SITE=.*#FOODTAPA_SITE=https://xn--ok0bu1tj8ag2pewfs6i.net#' -e 's/^FOODTAPA_USER=.*/FOODTAPA_USER=/' -e 's/^FOODTAPA_APP_PASSWORD=.*/FOODTAPA_APP_PASSWORD=/' foodtapa-api.env
+   grep '^FOODTAPA_SITE=' foodtapa-api.env
+   open -e foodtapa-api.env || open -R foodtapa-api.env
+   ```
+
+   윈도우(PowerShell):
+
+   ```powershell
+   $f = Join-Path $env:USERPROFILE 'foodtapa\foodtapa-api.env'
+   $lines = Get-Content $f | ForEach-Object { $_ -replace '^FOODTAPA_SITE=.*','FOODTAPA_SITE=https://xn--ok0bu1tj8ag2pewfs6i.net' -replace '^FOODTAPA_USER=.*','FOODTAPA_USER=' -replace '^FOODTAPA_APP_PASSWORD=.*','FOODTAPA_APP_PASSWORD=' }
+   [IO.File]::WriteAllLines($f, $lines); Select-String '^FOODTAPA_SITE=' $f; notepad $f
+   ```
+
+3. "사이트 주소를 음식물처리기.net으로 바꿨습니다. 예전 사이트의 아이디와 애플리케이션 비밀번호는 새 사이트에서 쓸 수 없어 비웠습니다"라고 알리고 3단계 안내(새 사이트에서 애플리케이션 비밀번호 발급 포함)로 이어 간다. 이후 4단계 확인까지 마친다.
 
 ## AI 키 등록
 
