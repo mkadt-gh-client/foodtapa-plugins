@@ -1,18 +1,18 @@
 {
   "name": "foodtapa",
-  "version": "1.0.12",
-  "description": "푸드타파 노션 원고를 사이트 외부 원고 검수로 보내고, 접속 설정·원고 정보 채우기·결과 확인·수정 반영·관리자 허용·발행·오류 대응까지 돕는 스킬 모음",
+  "version": "1.0.13",
+  "description": "음처기넷 노션 원고를 사이트 외부 원고 검수로 보내고, 접속 설정·원고 정보 채우기·결과 확인·수정 반영·관리자 허용·발행·오류 대응까지 돕는 스킬 모음",
   "author": {
     "name": "marketadapter"
   },
   "skills": "./skills/",
   "interface": {
-    "displayName": "푸드타파",
-    "shortDescription": "노션 원고를 푸드타파 사이트 검수로 보내기",
-    "longDescription": "노션 원고를 푸드타파 사이트의 외부 원고 검수로 보내고, 접속 설정과 원고 정보 채우기부터 결과 확인, 수정 반영, 관리자 허용, 발행 예약, 오류 대응까지 단계별 스킬로 진행합니다.",
+    "displayName": "음처기넷",
+    "shortDescription": "노션 원고를 음처기넷 사이트 검수로 보내기",
+    "longDescription": "노션 원고를 음처기넷 사이트의 외부 원고 검수로 보내고, 접속 설정과 원고 정보 채우기부터 결과 확인, 수정 반영, 관리자 허용, 발행 예약, 오류 대응까지 단계별 스킬로 진행합니다.",
     "developerName": "marketadapter",
     "category": "Productivity",
     "capabilities": [],
-    "defaultPrompt": "푸드타파 스킬 설치 확인해줘"
+    "defaultPrompt": "음처기넷 스킬 설치 확인해줘"
   }
 }

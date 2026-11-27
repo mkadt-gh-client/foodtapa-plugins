@@ -1,7 +1,7 @@
 {
   "name": "foodtapa-plugins",
   "interface": {
-    "displayName": "푸드타파"
+    "displayName": "음처기넷"
   },
   "plugins": [
     {
